@@ -1,12 +1,14 @@
+import os
+
+from dotenv import load_dotenv
 from flask import Flask, request, jsonify
-from qdrant_client import QdrantClient
-from langchain.vectorstores import Qdrant
-from langchain.embeddings import FastEmbedEmbeddings
 from langchain.chains import ConversationalRetrievalChain
 from langchain.chat_models import ChatOpenAI
+from langchain.embeddings import FastEmbedEmbeddings
 from langchain.memory import ConversationBufferMemory
-from dotenv import load_dotenv
-import os
+from langchain.vectorstores import Qdrant
+from langfuse.callback import CallbackHandler
+from qdrant_client import QdrantClient
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -26,6 +28,12 @@ vector_store = Qdrant(
     embeddings=FastEmbedEmbeddings(),
 )
 
+langfuse_handler = CallbackHandler(
+    secret_key=os.getenv('LANGFUSE_SECRET_KEY'),
+    public_key=os.getenv('LANGFUSE_PUBLIC_KEY'),
+    host=os.getenv('LANGFUSE_HOST')
+)
+
 # Initialize memory, LLM, and QA chain
 memory = ConversationBufferMemory(
     memory_key="chat_history",
@@ -37,7 +45,8 @@ retriever = vector_store.as_retriever()
 qa = ConversationalRetrievalChain.from_llm(
     llm,
     retriever=retriever,
-    memory=memory
+    memory=memory,
+    callbacks=[langfuse_handler]
 )
 
 
@@ -75,3 +84,5 @@ def home():
 # Run the app
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+
+# curl -X POST http://127.0.0.1:5000/ask -H "Content-Type: application/json" -d '{"question": "How much ipod with one gigabyte storage costs that was unveiled by Steve Jobs during annual MacWorld speech?"}'
