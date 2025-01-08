@@ -12,7 +12,7 @@ from langfuse.callback import CallbackHandler
 from qdrant_client import QdrantClient
 
 from database_utils import split_texts_for_db, assign_keywords, calculate_embedding, classify_text, \
-    add_articles_to_qdrant
+    add_article_to_qdrant
 from text_preparation_utils import sanitize_text
 
 app = Flask(__name__)
@@ -98,16 +98,16 @@ def add_article():
         label = classify_text(sanitized_text)
 
         # Create a DataFrame
-        df = pd.DataFrame({
-            "text": [sanitized_text],
-            "keywords": [keywords],
-            "splitted_text": [split_text],
-            "embeddings": [embeddings],
-            "labels": [label],
-            "data_source": [source]
-        })
+        row = {
+            "text": sanitized_text,
+            "keywords": keywords,
+            "splitted_text": split_text,
+            "embeddings": embeddings,
+            "labels": label,
+            "data_source": source
+        }
 
-        add_articles_to_qdrant(df, QDRANT_KEY, QDRANT_CLUSTER_URL)
+        add_article_to_qdrant(row, QDRANT_KEY, QDRANT_CLUSTER_URL)
         # Return the answer as JSON
         return jsonify({"message": "Article added to database"})
 
