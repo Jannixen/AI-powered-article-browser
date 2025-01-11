@@ -66,6 +66,20 @@ curl -s -X POST http://127.0.0.1:5000/retrieve -H "Content-Type: application/jso
 
 ![curl-retrieve](https://github.com/Jannixen/AI-powered-article-browser/blob/main/images/curl3.png)
 
+## Usage costs
+
+Simple QA consisting of two pairs of questions and answers costed $0.001:
+
+```txt
+{"question": "How much ipod with one gigabyte storage costs that was unveiled by Steve Jobs during annual MacWorld speech?"}'
+{"answer":"The iPod shuffle with one gigabyte of storage costs $149 as unveiled by Steve Jobs during the annual MacWorld speech."}
+{"question": "Is there a cheaper option?"}
+{"answer":"Yes, Apple has released the iPod shuffle, which is a cheaper option compared to other iPod models. The iPod shuffle uses flash memory instead of hard drives and is available in two versions: one with 512MB of storage for $99 and a second with 1GB of storage for $149."}
+```
+
+![image](https://github.com/user-attachments/assets/6c8c9336-af8c-4304-8439-3a136119597c)
+
+
 ## Sources
 
 1. https://www.kaggle.com/datasets/jacopoferretti/bbc-articles-dataset
