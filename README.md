@@ -87,4 +87,5 @@ Simple QA consisting of two pairs of questions and answers costed $0.001:
 3. https://huggingface.co/datasets/SetFit/bbc-news
 4. http://mlg.ucd.ie/datasets/bbc.html
 5. https://learn.deeplearning.ai/courses/langchain-chat-with-your-data/lesson/4/vectorstores-and-embedding
+6. https://www.bbc.com/
   
